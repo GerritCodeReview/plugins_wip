@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "844dff11_fb252f72",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/wip/ReadyForReviewAction.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "Ready? See my comment about WIP vs. Work In Progress for the UI button.",
+      "range": {
+        "startLine": 63,
+        "startChar": 18,
+        "endLine": 63,
+        "endChar": 36
+      },
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "844dff11_db207365",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/wip/WorkInProgressAction.java",
+        "patchSetId": 8
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "WIP? This is fairly long to put into the UI.\n\nI don\u0027t actually care. I just would have tried using WIP with the title to explain the acronym and hoped users would be OK with the smaller UI.",
+      "range": {
+        "startLine": 63,
+        "startChar": 18,
+        "endLine": 63,
+        "endChar": 36
+      },
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "844dff11_3bf397cc",
+        "filename": "src/main/resources/Documentation/rest-api-changes.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "This impacts a change by setting its status, but its performed against the revision resource? Why isn\u0027t this on the change?",
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "241613dd_f8d21120",
+        "filename": "src/main/resources/static/wip.js",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "t.value?",
+      "range": {
+        "startLine": 20,
+        "startChar": 20,
+        "endLine": 20,
+        "endChar": 27
+      },
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "241613dd_b8dc9931",
+        "filename": "src/main/resources/static/wip.js",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "I think you can do both of these in the same Gerrit.install block. There is no technical reason to separate them.",
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "241613dd_98d7550f",
+        "filename": "src/main/resources/static/wip.js",
+        "patchSetId": 8
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001240
+      },
+      "writtenOn": "2013-09-29T23:36:58Z",
+      "side": 1,
+      "message": "t.value?",
+      "range": {
+        "startLine": 40,
+        "startChar": 20,
+        "endLine": 40,
+        "endChar": 27
+      },
+      "revId": "feccfc913f64ea636aee9c330396e8d49ff50717",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
