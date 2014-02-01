@@ -16,7 +16,7 @@ package com.googlesource.gerrit.plugins.wip;
 
 import com.google.gerrit.sshd.PluginCommandModule;
 
-public class SshModule extends PluginCommandModule {
+class SshModule extends PluginCommandModule {
   @Override
   protected void configureCommands() {
     command(SetCommand.class);

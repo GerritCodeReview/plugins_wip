@@ -14,7 +14,8 @@
 
 package com.googlesource.gerrit.plugins.wip;
 
-import com.google.gerrit.extensions.annotations.RequiresCapability;
+import java.io.IOException;
+
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestModifyView;
@@ -25,26 +26,27 @@ import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.index.ChangeIndexer;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-@RequiresCapability(WorkInProgressCapability.WORK_IN_PROGRESS)
-class ReadyForReviewAction extends BaseAction implements
+class WorkInProgress extends BaseAction implements
     UiAction<RevisionResource>,
     RestModifyView<RevisionResource, BaseAction.Input> {
 
   @Inject
-  ReadyForReviewAction(Provider<ReviewDb> dbProvider,
-      Provider<CurrentUser> userProvider) {
-    super(dbProvider, userProvider);
+  WorkInProgress(Provider<ReviewDb> dbProvider,
+      Provider<CurrentUser> userProvider,
+      ChangeIndexer indexer) {
+    super(dbProvider, userProvider, indexer);
   }
 
   @Override
   public Object apply(RevisionResource rsrc, Input input)
-      throws ResourceConflictException, OrmException {
+      throws ResourceConflictException, OrmException, IOException {
     Change change = rsrc.getChange();
-    if (change.getStatus() != Status.WORKINPROGRESS) {
+    if (change.getStatus() != Status.NEW) {
       throw new ResourceConflictException("change is " + status(change));
     }
 
@@ -52,7 +54,7 @@ class ReadyForReviewAction extends BaseAction implements
       throw new ResourceConflictException("not current patch set");
     }
 
-    changeStatus(change, input, Status.WORKINPROGRESS, Status.NEW);
+    changeStatus(change, input, Status.NEW, Status.DRAFT);
     return Response.none();
   }
 
@@ -60,9 +62,10 @@ class ReadyForReviewAction extends BaseAction implements
   public Description getDescription(RevisionResource rsrc) {
     PatchSet.Id current = rsrc.getChange().currentPatchSetId();
     return new Description()
-        .setLabel("Ready")
-        .setTitle("Set Ready For Review")
-        .setVisible(rsrc.getChange().getStatus() == Status.WORKINPROGRESS
+        .setLabel("WIP")
+        .setTitle("Set Work In Progress")
+        .setVisible(rsrc.getControl().isOwner()
+           && rsrc.getChange().getStatus() == Status.NEW
            && rsrc.getPatchSet().getId().equals(current));
   }
 }
