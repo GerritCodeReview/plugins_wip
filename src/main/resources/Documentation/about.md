@@ -1,7 +1,7 @@
 Gerrit Work in Progress plugin
 ==============================
 
-This plugin adds a new button that allows an authorized user to set a
+This plugin adds a new button that allows a change owner to set a
 change to Work In Progress, and a button to change from WIP back
 to a "Ready For Review" state.
 
@@ -11,10 +11,6 @@ In Progress.
 
 In addition this plugin exposes this functionality as REST endpoints
 and SSH command.
-
-It is intended to be used in combination with the new "Change Owners" group. The
-plugin owned capability "Work In Progress" can be granted to that group,
-so that only change owners can toggle the WIP state.
 
 Work In Progress Workflow:
 --------------------------

@@ -23,15 +23,15 @@ import org.kohsuke.args4j.Option;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.gerrit.extensions.annotations.RequiresCapability;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
+import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.reviewdb.client.RevId;
 import com.google.gerrit.reviewdb.server.ReviewDb;
-import com.google.gerrit.server.change.ChangeResource;
+import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gerrit.server.project.ChangeControl;
+import com.google.gerrit.server.index.ChangeIndexer;
 import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.sshd.CommandMetaData;
@@ -41,9 +41,8 @@ import com.google.gwtorm.server.ResultSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-@RequiresCapability(WorkInProgressCapability.WORK_IN_PROGRESS)
 @CommandMetaData(name = "set", description = "Mark the change as WIP or Ready")
-public class SetCommand extends SshCommand {
+class SetCommand extends SshCommand {
   private static final Logger log = LoggerFactory.getLogger(SetCommand.class);
 
   private final Set<PatchSet> patchSets = new HashSet<PatchSet>();
@@ -82,13 +81,16 @@ public class SetCommand extends SshCommand {
   private ReviewDb db;
 
   @Inject
-  private ChangeControl.Factory changeControlFactory;
+  private Provider<WorkInProgress> wipProvider;
 
   @Inject
-  private Provider<WorkInProgressAction> wipProvider;
+  private Provider<ReadyForReview> readyProvider;
 
   @Inject
-  private Provider<ReadyForReviewAction> readyProvider;
+  ChangeIndexer indexer;
+
+  @Inject
+  ChangesCollection changes;
 
   @Override
   protected void run() throws UnloggedFailure {
@@ -103,13 +105,8 @@ public class SetCommand extends SshCommand {
     for (PatchSet patchSet : patchSets) {
       try {
         mark(patchSet);
-      } catch (NoSuchChangeException e) {
-        ok = false;
-        writeError("no such change " + patchSet.getId().getParentKey().get());
-      } catch (ResourceConflictException e) {
-        writeError("error: " + e.getMessage() + "\n");
-        ok = false;
-      } catch (OrmException e) {
+      } catch (NoSuchChangeException | ResourceConflictException | IOException
+          | OrmException | ResourceNotFoundException e) {
         ok = false;
         writeError("fatal: internal server error while approving "
             + patchSet.getId() + "\n");
@@ -123,10 +120,11 @@ public class SetCommand extends SshCommand {
   }
 
   private void mark(PatchSet patchSet) throws NoSuchChangeException,
-      ResourceConflictException, OrmException {
-    RevisionResource rsrc = new RevisionResource(
-        new ChangeResource(changeControlFactory
-            .controlFor(patchSet.getId().getParentKey())), patchSet);
+      ResourceConflictException, OrmException, IOException,
+      ResourceNotFoundException {
+    RevisionResource rsrc =
+        new RevisionResource(changes.parse(patchSet.getId().getParentKey()),
+            patchSet);
     BaseAction.Input input = new BaseAction.Input();
     input.message = changeComment;
     if (wipChange) {
