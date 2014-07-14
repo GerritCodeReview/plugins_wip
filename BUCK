@@ -1,3 +1,5 @@
+include_defs('//bucklets/gerrit_plugin.bucklet')
+
 gerrit_plugin(
   name = 'wip',
   srcs = glob(['src/main/java/**/*.java']),
@@ -9,3 +11,7 @@ gerrit_plugin(
   ],
 )
 
+java_library(
+  name = 'classpath',
+  deps = [':wip__plugin'],
+)
