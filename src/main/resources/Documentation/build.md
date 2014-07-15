@@ -19,16 +19,16 @@ Clone bucklets library:
   git clone https://gerrit.googlesource.com/bucklets
 
 ```
-and link it to quota plugin directory:
+and link it to wip plugin directory:
 
 ```
-  cd quota && ln -s ../bucklets .
+  cd wip && ln -s ../bucklets .
 ```
 
 Add link to the .buckversion file:
 
 ```
-  cd quota && ln -s bucklets/buckversion .buckversion
+  cd wip && ln -s bucklets/buckversion .buckversion
 ```
 
 To build the plugin, issue the following command:
