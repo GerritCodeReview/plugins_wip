@@ -14,15 +14,6 @@
 
 package com.googlesource.gerrit.plugins.wip;
 
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.kohsuke.args4j.Argument;
-import org.kohsuke.args4j.Option;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.reviewdb.client.Change;
@@ -32,7 +23,6 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.index.ChangeIndexer;
-import com.google.gerrit.server.project.NoSuchChangeException;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.sshd.CommandMetaData;
 import com.google.gerrit.sshd.SshCommand;
@@ -41,11 +31,20 @@ import com.google.gwtorm.server.ResultSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import org.kohsuke.args4j.Argument;
+import org.kohsuke.args4j.Option;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
 @CommandMetaData(name = "set", description = "Mark the change as WIP or Ready")
 class SetCommand extends SshCommand {
   private static final Logger log = LoggerFactory.getLogger(SetCommand.class);
 
-  private final Set<PatchSet> patchSets = new HashSet<PatchSet>();
+  private final Set<PatchSet> patchSets = new HashSet<>();
 
   @Argument(index = 0, required = true,
       multiValued = true,
@@ -105,7 +104,7 @@ class SetCommand extends SshCommand {
     for (PatchSet patchSet : patchSets) {
       try {
         mark(patchSet);
-      } catch (NoSuchChangeException | ResourceConflictException | IOException
+      } catch (ResourceConflictException | IOException
           | OrmException | ResourceNotFoundException e) {
         ok = false;
         writeError("fatal: internal server error while approving "
@@ -119,9 +118,8 @@ class SetCommand extends SshCommand {
     }
   }
 
-  private void mark(PatchSet patchSet) throws NoSuchChangeException,
-      ResourceConflictException, OrmException, IOException,
-      ResourceNotFoundException {
+  private void mark(PatchSet patchSet) throws ResourceConflictException,
+      OrmException, IOException, ResourceNotFoundException {
     RevisionResource rsrc =
         new RevisionResource(changes.parse(patchSet.getId().getParentKey()),
             patchSet);
@@ -147,7 +145,7 @@ class SetCommand extends SshCommand {
         patches = db.patchSets().byRevisionRange(id, id.max());
       }
 
-      Set<PatchSet> matches = new HashSet<PatchSet>();
+      Set<PatchSet> matches = new HashSet<>();
       for (PatchSet ps : patches) {
         Change change = db.changes().get(ps.getId().getParentKey());
         if (inProject(change)) {
