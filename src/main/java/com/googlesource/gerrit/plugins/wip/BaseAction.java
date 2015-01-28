@@ -14,11 +14,7 @@
 
 package com.googlesource.gerrit.plugins.wip;
 
-import java.io.IOException;
-import java.util.Collections;
-
 import com.google.common.base.Strings;
-import com.google.common.util.concurrent.CheckedFuture;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Change.Status;
@@ -32,6 +28,9 @@ import com.google.gwtorm.server.AtomicUpdate;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import java.io.IOException;
+import java.util.Collections;
 
 abstract class BaseAction {
   static class Input {
@@ -80,14 +79,12 @@ abstract class BaseAction {
       db.changeMessages().insert(Collections.singleton(
           newMessage(input, change)));
 
-      CheckedFuture<?, IOException> indexFuture =
-          indexer.indexAsync(change.getId());
-      indexFuture.checkedGet();
-
       db.commit();
     } finally {
       db.rollback();
     }
+
+    indexer.index(db, change);
   }
 
   private ChangeMessage newMessage(Input input,
