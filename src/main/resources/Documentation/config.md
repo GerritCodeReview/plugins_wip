@@ -2,7 +2,12 @@ Configuration
 =============
 
 The configuration of the @PLUGIN@ plugin is done in the `gerrit.config`
-file. This plugin overloads Gerrit own DRAFT workflow.  The WIP workflow
+file.
+
+Enable WIP Workflow
+-------------------
+
+This plugin overloads Gerrit own DRAFT workflow.  The WIP workflow
 can only be enabled, when DRAFT workflow in Gerrit was disabled.
 
 *Warning*: When DRAFT workflow was used in Gerrit, i. e. changes in
@@ -16,3 +21,19 @@ To disable DRAFT workflow the following must be set in `gerrit.config`:
     allowDrafts = false
 ```
 WIP workflow can be used now.
+
+Customize Status Label
+----------------------
+
+The WIP plugin overrides the draft workflow but it does not override the
+Gerrit draft status label.  This means that Gerrit will continue to report
+draft changes as "Status Draft".  It is advisable to customize the draft
+status label to something more appropriate when using the WIP workflow.
+
+To make the status "Work In Progress" appear on the Gerrit UI you can configure
+the [draftLabel](../../../Documentation/config-gerrit.html#change) setting:
+
+```
+  [change]
+    draftLabel = Work In Progress
+```
