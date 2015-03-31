@@ -37,3 +37,21 @@ the [draftLabel](../../../Documentation/config-gerrit.html#change) setting:
   [change]
     draftLabel = Work In Progress
 ```
+
+Configure Access
+----------------
+
+The WIP plugin workflow binds to the existing Gerrit [access control]
+(../../../Documentation/access-control.html#access_categories) feature
+that manages draft changes.  By default drafts are only accessible to
+the owner and reviewers of the change and also to the administrators group.
+It is advisable to configure the drafts access control to match your WIP
+workflow.
+
+For example the following setting will allow any user to view WIP changes
+from the Gerrit UI and to retrieve WIP changes using the REST API:
+
+```
+  [access "refs/*"]
+    viewDrafts = group Anonymous Users
+```
