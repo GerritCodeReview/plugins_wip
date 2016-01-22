@@ -16,18 +16,15 @@ package com.googlesource.gerrit.plugins.wip;
 
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
-import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.PatchSet;
-import com.google.gerrit.reviewdb.client.RevId;
-import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.index.ChangeIndexer;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.sshd.CommandMetaData;
 import com.google.gerrit.sshd.SshCommand;
+import com.google.gerrit.sshd.commands.PatchSetParser;
 import com.google.gwtorm.server.OrmException;
-import com.google.gwtorm.server.ResultSet;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -46,13 +43,13 @@ class SetCommand extends SshCommand {
 
   private final Set<PatchSet> patchSets = new HashSet<>();
 
-  @Argument(index = 0, required = true,
-      multiValued = true,
+  @Argument(index = 0, required = true, multiValued = true,
       metaVar = "{COMMIT | CHANGE,PATCHSET}",
       usage = "list of commits or patch sets to review")
   void addPatchSetId(String token) {
     try {
-      patchSets.add(parsePatchSet(token));
+      PatchSet ps = psParser.parsePatchSet(token, projectControl, branch);
+      patchSets.add(ps);
     } catch (UnloggedFailure e) {
       throw new IllegalArgumentException(e.getMessage(), e);
     } catch (OrmException e) {
@@ -63,6 +60,9 @@ class SetCommand extends SshCommand {
   @Option(name = "--project", aliases = "-p",
       usage = "project containing the specified patch set(s)")
   private ProjectControl projectControl;
+
+  @Option(name = "--branch", aliases = "-b", usage = "branch containing the specified patch set(s)")
+  private String branch;
 
   @Option(name = "--message", aliases = "-m",
       usage = "cover message on change(s)", metaVar = "MESSAGE")
@@ -77,9 +77,6 @@ class SetCommand extends SshCommand {
   private boolean readyChange;
 
   @Inject
-  private ReviewDb db;
-
-  @Inject
   private Provider<WorkInProgress> wipProvider;
 
   @Inject
@@ -90,6 +87,9 @@ class SetCommand extends SshCommand {
 
   @Inject
   ChangesCollection changes;
+
+  @Inject
+  PatchSetParser psParser;
 
   @Override
   protected void run() throws UnloggedFailure {
@@ -130,71 +130,6 @@ class SetCommand extends SshCommand {
     } else {
       readyProvider.get().apply(rsrc, input);
     }
-  }
-
-  private PatchSet parsePatchSet(String patchIdentity)
-      throws UnloggedFailure, OrmException {
-    // By commit?
-    //
-    if (patchIdentity.matches("^([0-9a-fA-F]{4," + RevId.LEN + "})$")) {
-      RevId id = new RevId(patchIdentity);
-      ResultSet<PatchSet> patches;
-      if (id.isComplete()) {
-        patches = db.patchSets().byRevision(id);
-      } else {
-        patches = db.patchSets().byRevisionRange(id, id.max());
-      }
-
-      Set<PatchSet> matches = new HashSet<>();
-      for (PatchSet ps : patches) {
-        Change change = db.changes().get(ps.getId().getParentKey());
-        if (inProject(change)) {
-          matches.add(ps);
-        }
-      }
-
-      switch (matches.size()) {
-        case 1:
-          return matches.iterator().next();
-        case 0:
-          throw error("\"" + patchIdentity + "\" no such patch set");
-        default:
-          throw error("\"" + patchIdentity + "\" matches multiple patch sets");
-      }
-    }
-
-    // By older style change,patchset?
-    //
-    if (patchIdentity.matches("^[1-9][0-9]*,[1-9][0-9]*$")) {
-      PatchSet.Id patchSetId;
-      try {
-        patchSetId = PatchSet.Id.parse(patchIdentity);
-      } catch (IllegalArgumentException e) {
-        throw error("\"" + patchIdentity + "\" is not a valid patch set");
-      }
-      PatchSet patchSet = db.patchSets().get(patchSetId);
-      if (patchSet == null) {
-        throw error("\"" + patchIdentity + "\" no such patch set");
-      }
-      if (projectControl != null) {
-        Change change = db.changes().get(patchSetId.getParentKey());
-        if (!inProject(change)) {
-          throw error("change " + change.getId() + " not in project "
-              + projectControl.getProject().getName());
-        }
-      }
-      return patchSet;
-    }
-
-    throw error("\"" + patchIdentity + "\" is not a valid patch set");
-  }
-
-  private boolean inProject(Change change) {
-    if (projectControl == null) {
-      // No --project option, so they want every project.
-      return true;
-    }
-    return projectControl.getProject().getNameKey().equals(change.getProject());
   }
 
   private void writeError(String msg) {
