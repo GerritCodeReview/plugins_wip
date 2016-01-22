@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34a20e64_7cf0b9b8",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-01-22T06:49:13Z",
+      "side": 1,
+      "message": "This plugin doesn\u0027t use any GWT UI extension, so that this dependency is unused and can be removed. Maven uild doesn\u0027t use it either.",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 1
+      },
+      "revId": "d808ea714b2adcbcfba68e0c177cc86498ed273d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
