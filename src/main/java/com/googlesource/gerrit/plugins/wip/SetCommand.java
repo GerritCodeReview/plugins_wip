@@ -15,10 +15,11 @@
 package com.googlesource.gerrit.plugins.wip;
 
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.git.UpdateException;
 import com.google.gerrit.server.index.ChangeIndexer;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.sshd.CommandMetaData;
@@ -104,8 +105,8 @@ class SetCommand extends SshCommand {
     for (PatchSet patchSet : patchSets) {
       try {
         mark(patchSet);
-      } catch (ResourceConflictException | IOException
-          | OrmException | ResourceNotFoundException e) {
+      } catch (RestApiException | IOException
+          | OrmException | UpdateException e) {
         ok = false;
         writeError("fatal: internal server error while approving "
             + patchSet.getId() + "\n");
@@ -119,7 +120,7 @@ class SetCommand extends SshCommand {
   }
 
   private void mark(PatchSet patchSet) throws ResourceConflictException,
-      OrmException, IOException, ResourceNotFoundException {
+      OrmException, IOException, RestApiException, UpdateException {
     RevisionResource rsrc =
         new RevisionResource(changes.parse(patchSet.getId().getParentKey()),
             patchSet);
