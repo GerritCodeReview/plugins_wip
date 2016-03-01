@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.extensions.webui.UiAction;
 import com.google.gerrit.reviewdb.client.Change;
@@ -26,6 +27,8 @@ import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.git.BatchUpdate;
+import com.google.gerrit.server.git.UpdateException;
 import com.google.gerrit.server.index.ChangeIndexer;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
@@ -38,13 +41,14 @@ class ReadyForReview extends BaseAction implements
   @Inject
   ReadyForReview(Provider<ReviewDb> dbProvider,
       Provider<CurrentUser> userProvider,
-      ChangeIndexer indexer) {
-    super(dbProvider, userProvider, indexer);
+      ChangeIndexer indexer,
+      BatchUpdate.Factory batchUpdateFactory) {
+    super(dbProvider, userProvider, indexer, batchUpdateFactory);
   }
 
   @Override
   public Object apply(RevisionResource rsrc, Input input)
-      throws ResourceConflictException, OrmException, IOException {
+      throws RestApiException, OrmException, IOException, UpdateException {
     Change change = rsrc.getChange();
     if (change.getStatus() != Status.DRAFT) {
       throw new ResourceConflictException("change is " + status(change));

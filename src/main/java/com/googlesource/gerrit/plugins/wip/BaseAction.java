@@ -15,7 +15,8 @@
 package com.googlesource.gerrit.plugins.wip;
 
 import com.google.common.base.Strings;
-import com.google.gerrit.extensions.restapi.ResourceConflictException;
+import com.google.gerrit.common.TimeUtil;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Change.Status;
 import com.google.gerrit.reviewdb.client.ChangeMessage;
@@ -23,8 +24,9 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.ChangeUtil;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
+import com.google.gerrit.server.git.BatchUpdate;
+import com.google.gerrit.server.git.UpdateException;
 import com.google.gerrit.server.index.ChangeIndexer;
-import com.google.gwtorm.server.AtomicUpdate;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -40,41 +42,40 @@ abstract class BaseAction {
   private final Provider<ReviewDb> dbProvider;
   private final Provider<CurrentUser> userProvider;
   private final ChangeIndexer indexer;
+  private final BatchUpdate.Factory batchUpdateFactory;
 
   @Inject
   BaseAction(Provider<ReviewDb> dbProvider,
       Provider<CurrentUser> userProvider,
-      ChangeIndexer indexer) {
+      ChangeIndexer indexer,
+      BatchUpdate.Factory batchUpdateFactory) {
     this.dbProvider = dbProvider;
     this.userProvider = userProvider;
     this.indexer = indexer;
+    this.batchUpdateFactory = batchUpdateFactory;
   }
 
   protected void changeStatus(Change change, Input input, final Status from,
-      final Status to) throws OrmException, ResourceConflictException,
-      IOException {
+      final Status to) throws OrmException, RestApiException,
+      IOException, UpdateException {
     ReviewDb db = dbProvider.get();
     Change.Id changeId = change.getId();
     db.changes().beginTransaction(changeId);
-    try {
-      change = db.changes().atomicUpdate(
-        changeId,
-        new AtomicUpdate<Change>() {
-          @Override
-          public Change update(Change change) {
-            if (change.getStatus() == from) {
-              change.setStatus(to);
-              ChangeUtil.updated(change);
-              return change;
-            }
-            return null;
+    try (BatchUpdate bu = batchUpdateFactory.create(
+        db, change.getProject(), userProvider.get(), TimeUtil.nowTs())) {
+      bu.addOp(change.getId(), new BatchUpdate.Op() {
+        @Override
+        public boolean updateChange(BatchUpdate.ChangeContext ctx) {
+          Change change = ctx.getChange();
+          if (change.getStatus() == from) {
+            change.setStatus(to);
+            ctx.saveChange();
+            return true;
           }
-        });
-
-      if (change == null) {
-        throw new ResourceConflictException("change is "
-            + status(db.changes().get(changeId)));
-      }
+          return false;
+        }
+      });
+      bu.execute();
 
       db.changeMessages().insert(Collections.singleton(
           newMessage(input, change)));
