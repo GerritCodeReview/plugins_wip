@@ -26,7 +26,7 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.git.BatchUpdate;
 import com.google.gerrit.server.git.UpdateException;
-import com.google.gerrit.server.index.ChangeIndexer;
+import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -69,7 +69,7 @@ abstract class BaseAction {
           Change change = ctx.getChange();
           if (change.getStatus() == from) {
             change.setStatus(to);
-            ctx.saveChange();
+            ctx.bumpLastUpdatedOn(false);
             return true;
           }
           return false;
