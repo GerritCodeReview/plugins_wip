@@ -58,7 +58,8 @@ class ReadyForReview extends BaseAction implements
       throw new ResourceConflictException("not current patch set");
     }
 
-    changeStatus(change, input, Status.DRAFT, Status.NEW);
+    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.DRAFT,
+        Status.NEW);
     return Response.none();
   }
 

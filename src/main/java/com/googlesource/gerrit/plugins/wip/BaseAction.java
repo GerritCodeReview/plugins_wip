@@ -20,6 +20,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.reviewdb.client.Change.Status;
 import com.google.gerrit.reviewdb.client.ChangeMessage;
+import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.ChangeUtil;
 import com.google.gerrit.server.CurrentUser;
@@ -27,6 +28,7 @@ import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.git.BatchUpdate;
 import com.google.gerrit.server.git.UpdateException;
 import com.google.gerrit.server.index.change.ChangeIndexer;
+import com.google.gerrit.server.notedb.ChangeUpdate;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -55,9 +57,9 @@ abstract class BaseAction {
     this.batchUpdateFactory = batchUpdateFactory;
   }
 
-  protected void changeStatus(Change change, Input input, final Status from,
-      final Status to) throws OrmException, RestApiException,
-      IOException, UpdateException {
+  protected void changeStatus(Change change, final PatchSet.Id psId,
+      Input input, final Status from, final Status to)
+      throws OrmException, RestApiException, IOException, UpdateException {
     ReviewDb db = dbProvider.get();
     Change.Id changeId = change.getId();
     db.changes().beginTransaction(changeId);
@@ -67,8 +69,10 @@ abstract class BaseAction {
         @Override
         public boolean updateChange(BatchUpdate.ChangeContext ctx) {
           Change change = ctx.getChange();
+          ChangeUpdate update = ctx.getUpdate(psId);
           if (change.getStatus() == from) {
             change.setStatus(to);
+            update.setStatus(change.getStatus());
             return true;
           }
           return false;
