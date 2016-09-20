@@ -58,7 +58,8 @@ class WorkInProgress extends BaseAction implements
       throw new ResourceConflictException("not current patch set");
     }
 
-    changeStatus(change, input, Status.NEW, Status.DRAFT);
+    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.NEW,
+        Status.DRAFT);
     return Response.none();
   }
 
