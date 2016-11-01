@@ -1,7 +1,49 @@
 Build
 =====
 
-This plugin can be built with Buck or Maven.
+This plugin can be built with Bazel, Buck or Maven.
+
+Bazel
+-----
+
+### Build standalone
+
+To build the plugin, issue the following command:
+
+
+```
+  bazel build wip
+```
+
+The output is created in
+
+
+```
+  bazel-bin/wip/wip.jar
+```
+
+### Build in Gerrit tree
+
+Clone or link this plugin to the plugins directory of Gerrit's source
+tree, and issue the command:
+
+```
+  bazel build plugins/@PLUGIN@
+```
+
+The output is created in
+
+```
+  bazel-genfiles/plugins/@PLUGIN@/@PLUGIN@.jar0
+```
+
+This project can be imported into the Eclipse IDE.
+Add the plugin name to the `CUSTOM_PLUGINS` set in
+Gerrit core in `tools/bzl/plugins.bzl`, and execute:
+
+```
+  ./tools/eclipse/project.py
+```
 
 Buck
 ----
