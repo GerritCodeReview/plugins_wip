@@ -6,3 +6,8 @@
 /.classpath
 /.settings
 /.project
+/bazel-bin
+/bazel-genfiles
+/bazel-wip
+/bazel-out
+/bazel-testlogs
