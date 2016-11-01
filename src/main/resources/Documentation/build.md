@@ -1,7 +1,24 @@
 Build
 =====
 
-This plugin can be built with Buck or Maven.
+This plugin can be built with Bazel, Buck or Maven.
+
+Bazel
+-----
+
+To build the plugin, issue the following command:
+
+
+```
+  bazel build wip_deploy.jar
+```
+
+The output is created in
+
+
+```
+  bazel-bin/wip_deploy.jar
+```
 
 Buck
 ----
