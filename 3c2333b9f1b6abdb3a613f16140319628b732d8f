@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a1ba32a_d53e9ccb",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 2
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-12-18T18:36:06Z",
+      "side": 1,
+      "message": "Why not 2.13.4?\n\n  https://groups.google.com/d/topic/repo-discuss/zkc5XulTrJk/discussion",
+      "range": {
+        "startLine": 3,
+        "startChar": 7,
+        "endLine": 3,
+        "endChar": 13
+      },
+      "revId": "3c2333b9f1b6abdb3a613f16140319628b732d8f",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
