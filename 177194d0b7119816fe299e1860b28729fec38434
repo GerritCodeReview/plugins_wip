@@ -16,6 +16,23 @@
       "revId": "177194d0b7119816fe299e1860b28729fec38434",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1ba84c4_26272f1d",
+        "filename": "version.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-01-29T18:52:03Z",
+      "side": 1,
+      "message": "Oh, so we doint need to do PLUGIN_VERSION?",
+      "revId": "177194d0b7119816fe299e1860b28729fec38434",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
