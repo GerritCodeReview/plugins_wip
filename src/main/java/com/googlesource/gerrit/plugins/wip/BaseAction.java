@@ -106,7 +106,7 @@ abstract class BaseAction {
     ChangeMessage message = new ChangeMessage(
         new ChangeMessage.Key(
             change.getId(),
-            ChangeUtil.messageUUID(dbProvider.get())),
+            ChangeUtil.messageUuid(dbProvider.get())),
         ((IdentifiedUser)userProvider.get()).getAccountId(),
         change.getLastUpdatedOn(),
         change.currentPatchSetId());

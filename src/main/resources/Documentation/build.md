@@ -3,7 +3,7 @@ Build
 
 This plugin can be built with Buck or Maven.
 
-Buck
+Bazel
 ----
 
 Two build modes are supported: Standalone and in Gerrit tree.
@@ -13,35 +13,14 @@ the Gerrit tree to exist locally.
 
 ### Build standalone
 
-Clone bucklets library:
-
 ```
-  git clone https://gerrit.googlesource.com/bucklets
-
-```
-and link it to wip plugin directory:
-
-```
-  cd wip && ln -s ../bucklets .
-```
-
-Add link to the .buckversion file:
-
-```
-  cd wip && ln -s bucklets/buckversion .buckversion
-```
-
-To build the plugin, issue the following command:
-
-
-```
-  buck build plugin
+  bazel build wip
 ```
 
 The output is created in
 
 ```
-  buck-out/gen/wip.jar
+  bazel-genfiles/wip.jar
 ```
 
 ### Build in Gerrit tree
@@ -50,13 +29,13 @@ Clone or link this plugin to the plugins directory of Gerrit's source
 tree, and issue the command:
 
 ```
-  buck build plugins/wip
+  bazel build plugins/wip
 ```
 
 The output is created in
 
 ```
-  buck-out/gen/plugins/wip/wip.jar
+  bazel-genfiles/plugins/wip/wip.jar
 ```
 
 This project can be imported into the Eclipse IDE:
