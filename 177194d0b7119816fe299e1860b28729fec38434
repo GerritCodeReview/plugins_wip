@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7bed1834_37e2fc39",
+        "filename": "version.bzl",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-29T18:19:16Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be needed now.",
+      "revId": "177194d0b7119816fe299e1860b28729fec38434",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
