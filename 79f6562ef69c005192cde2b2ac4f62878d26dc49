@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "64530cb1_4122a506",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Jan 29, 2017 10:44:36 AM",
+      "side": 1,
+      "message": "Thanks, done.",
+      "revId": "79f6562ef69c005192cde2b2ac4f62878d26dc49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3245ec6b_82de5987",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -36,6 +53,23 @@
     },
     {
       "key": {
+        "uuid": "dd6434ef_d59500f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Jan 29, 2017 10:44:36 AM",
+      "side": 1,
+      "message": "Thanks, done.",
+      "revId": "79f6562ef69c005192cde2b2ac4f62878d26dc49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "aafd1408_aa47218f",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -47,6 +81,29 @@
       "writtenOn": "Jan 29, 2017 10:18:14 AM",
       "side": 1,
       "message": "I wouldn\u0027t say it that way. Something like:\n\n  Adapt to changes made in context of: I7d157b9e8.",
+      "range": {
+        "startLine": 10,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 45
+      },
+      "revId": "79f6562ef69c005192cde2b2ac4f62878d26dc49",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "658f27d8_f2ff0ec9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Jan 29, 2017 10:44:36 AM",
+      "side": 1,
+      "message": "Oh sorry, i wasent trying to say it was bad, just that change broke this plugin. But thanks.",
       "range": {
         "startLine": 10,
         "startChar": 0,
