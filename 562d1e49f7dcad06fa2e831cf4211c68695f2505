@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "3db1a74f_14f6e7c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Jan 29, 2017 8:53:37 AM",
+      "side": 1,
+      "message": "Woops, sorry, i will merge it in to your change.",
+      "revId": "562d1e49f7dcad06fa2e831cf4211c68695f2505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5c4f8767_c4927ee8",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -30,6 +47,29 @@
       "writtenOn": "Jan 29, 2017 8:40:39 AM",
       "side": 1,
       "message": "Extract it in it own change?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "562d1e49f7dcad06fa2e831cf4211c68695f2505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b0c033c9_adf8ac95",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "Jan 29, 2017 8:53:37 AM",
+      "side": 1,
+      "message": "Yep, thanks, done here https://gerrit-review.googlesource.com/#/c/95700/",
       "range": {
         "startLine": 9,
         "startChar": 0,
