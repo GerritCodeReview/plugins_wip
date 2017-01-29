@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "13baa88e_3877be4c",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-01-29T19:06:21Z",
+      "side": 1,
+      "message": "this should be wip.",
+      "range": {
+        "startLine": 13,
+        "startChar": 14,
+        "endLine": 13,
+        "endChar": 28
+      },
+      "revId": "72effb9419ffe03ff37d36da405035c46b653ce6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "337d6c81_0ede1b4f",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 7
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1029953
+      },
+      "writtenOn": "2017-01-29T19:06:21Z",
+      "side": 1,
+      "message": "Same here please.",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 20,
+        "endChar": 26
+      },
+      "revId": "72effb9419ffe03ff37d36da405035c46b653ce6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
