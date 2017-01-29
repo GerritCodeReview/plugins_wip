@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "93d2c208_2049499b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Jan 29, 2017 8:40:39 AM",
+      "side": 1,
+      "message": "I started already work on it. Merge this in this change?\n\n  https://gerrit-review.googlesource.com/#/c/90630/",
+      "revId": "562d1e49f7dcad06fa2e831cf4211c68695f2505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5c4f8767_c4927ee8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Jan 29, 2017 8:40:39 AM",
+      "side": 1,
+      "message": "Extract it in it own change?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 25
+      },
+      "revId": "562d1e49f7dcad06fa2e831cf4211c68695f2505",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
