@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "875eae74_9aa92b95",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-30T20:00:01Z",
+      "side": 1,
+      "message": "Nit: unneeded new line (only one empty line, not two).",
+      "revId": "493e5c5fc2fcd1dff6d361c60c60ace2b13081ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0b3f519_df578ac7",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-30T20:00:01Z",
+      "side": 1,
+      "message": "Nit: unneeded new line (only one empty line, not two).",
+      "revId": "493e5c5fc2fcd1dff6d361c60c60ace2b13081ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "08d5280a_55cf7f5d",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 10
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-30T20:00:01Z",
+      "side": 1,
+      "message": "Im standalone build this is not correct output location:\n\n  $ bazel build wip\n  INFO: Found 1 target...\n  Target //:wip up-to-date:\n    bazel-genfiles/wip.jar\n  INFO: Elapsed time: 4.427s, Critical Path: 2.51s\n\nThis should be:\n\n  bazel-genfiles/@PLUGIN@.jar",
+      "range": {
+        "startLine": 22,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 33
+      },
+      "revId": "493e5c5fc2fcd1dff6d361c60c60ace2b13081ef",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
