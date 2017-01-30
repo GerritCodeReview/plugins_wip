@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "054ec460_9989ede1",
+        "filename": ".gitignore",
+        "patchSetId": 9
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-30T19:39:24Z",
+      "side": 1,
+      "message": "Nit: unneeded new line.",
+      "revId": "623a989748cc08d7c3c6751910f4d0488643e0e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14608fa1_20f8e394",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2017-01-30T19:39:24Z",
+      "side": 1,
+      "message": "Nit: @PLUGIN@",
+      "range": {
+        "startLine": 15,
+        "startChar": 14,
+        "endLine": 15,
+        "endChar": 17
+      },
+      "revId": "623a989748cc08d7c3c6751910f4d0488643e0e0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
