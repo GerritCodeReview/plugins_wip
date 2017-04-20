@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.wip;
 
-import java.io.IOException;
-
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -27,19 +25,20 @@ import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gerrit.server.git.BatchUpdate;
-import com.google.gerrit.server.git.UpdateException;
 import com.google.gerrit.server.index.change.ChangeIndexer;
+import com.google.gerrit.server.update.BatchUpdate;
+import com.google.gerrit.server.update.UpdateException;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import java.io.IOException;
 
-class WorkInProgress extends BaseAction implements
-    UiAction<RevisionResource>,
-    RestModifyView<RevisionResource, BaseAction.Input> {
+class WorkInProgress extends BaseAction
+    implements UiAction<RevisionResource>, RestModifyView<RevisionResource, BaseAction.Input> {
 
   @Inject
-  WorkInProgress(Provider<ReviewDb> dbProvider,
+  WorkInProgress(
+      Provider<ReviewDb> dbProvider,
       Provider<CurrentUser> userProvider,
       ChangeIndexer indexer,
       BatchUpdate.Factory batchUpdateFactory) {
@@ -58,8 +57,7 @@ class WorkInProgress extends BaseAction implements
       throw new ResourceConflictException("not current patch set");
     }
 
-    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.NEW,
-        Status.DRAFT);
+    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.NEW, Status.DRAFT);
     return Response.none();
   }
 
@@ -69,8 +67,9 @@ class WorkInProgress extends BaseAction implements
     return new Description()
         .setLabel("WIP")
         .setTitle("Set Work In Progress")
-        .setVisible(rsrc.getControl().isOwner()
-           && rsrc.getChange().getStatus() == Status.NEW
-           && rsrc.getPatchSet().getId().equals(current));
+        .setVisible(
+            rsrc.getControl().isOwner()
+                && rsrc.getChange().getStatus() == Status.NEW
+                && rsrc.getPatchSet().getId().equals(current));
   }
 }
