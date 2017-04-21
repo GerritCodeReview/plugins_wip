@@ -19,7 +19,7 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.server.change.ChangesCollection;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gerrit.server.git.UpdateException;
+import com.google.gerrit.server.update.UpdateException;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.project.ProjectControl;
 import com.google.gerrit.sshd.CommandMetaData;

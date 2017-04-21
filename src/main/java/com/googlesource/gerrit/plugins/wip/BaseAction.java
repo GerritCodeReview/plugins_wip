@@ -25,8 +25,10 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.ChangeUtil;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
-import com.google.gerrit.server.git.BatchUpdate;
-import com.google.gerrit.server.git.UpdateException;
+import com.google.gerrit.server.update.BatchUpdate;
+import com.google.gerrit.server.update.BatchUpdateOp;
+import com.google.gerrit.server.update.ChangeContext;
+import com.google.gerrit.server.update.UpdateException;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeUpdate;
 import com.google.gwtorm.server.OrmException;
@@ -65,9 +67,9 @@ abstract class BaseAction {
     db.changes().beginTransaction(changeId);
     try (BatchUpdate bu = batchUpdateFactory.create(
         db, change.getProject(), userProvider.get(), TimeUtil.nowTs())) {
-      bu.addOp(change.getId(), new BatchUpdate.Op() {
+      bu.addOp(change.getId(), new BatchUpdateOp() {
         @Override
-        public boolean updateChange(BatchUpdate.ChangeContext ctx) {
+        public boolean updateChange(ChangeContext ctx) {
           Change change = ctx.getChange();
           ChangeUpdate update = ctx.getUpdate(psId);
           if (change.getStatus() == from) {
