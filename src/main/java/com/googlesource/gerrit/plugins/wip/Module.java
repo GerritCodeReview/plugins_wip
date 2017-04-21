@@ -23,14 +23,13 @@ public class Module extends AbstractModule {
 
   @Override
   protected void configure() {
-    install(new RestApiModule() {
-      @Override
-      protected void configure() {
-        post(REVISION_KIND, "set-wip")
-            .to(WorkInProgress.class);
-        post(REVISION_KIND, "set-ready")
-            .to(ReadyForReview.class);
-      }
-    });
+    install(
+        new RestApiModule() {
+          @Override
+          protected void configure() {
+            post(REVISION_KIND, "set-wip").to(WorkInProgress.class);
+            post(REVISION_KIND, "set-ready").to(ReadyForReview.class);
+          }
+        });
   }
 }
