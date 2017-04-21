@@ -22,7 +22,6 @@ import com.google.gerrit.httpd.plugins.HttpPluginModule;
 class HttpModule extends HttpPluginModule {
   @Override
   protected void configureServlets() {
-    DynamicSet.bind(binder(), WebUiPlugin.class)
-        .toInstance(new JavaScriptPlugin("wip.js"));
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("wip.js"));
   }
 }
