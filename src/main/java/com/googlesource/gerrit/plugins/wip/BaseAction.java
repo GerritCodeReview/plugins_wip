@@ -27,14 +27,13 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.index.change.ChangeIndexer;
 import com.google.gerrit.server.notedb.ChangeUpdate;
-import com.google.gwtorm.server.OrmException;
 import com.google.gerrit.server.update.BatchUpdate;
 import com.google.gerrit.server.update.BatchUpdateOp;
 import com.google.gerrit.server.update.ChangeContext;
 import com.google.gerrit.server.update.UpdateException;
+import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
 import java.io.IOException;
 import java.util.Collections;
 
@@ -49,7 +48,8 @@ abstract class BaseAction {
   private final BatchUpdate.Factory batchUpdateFactory;
 
   @Inject
-  BaseAction(Provider<ReviewDb> dbProvider,
+  BaseAction(
+      Provider<ReviewDb> dbProvider,
       Provider<CurrentUser> userProvider,
       ChangeIndexer indexer,
       BatchUpdate.Factory batchUpdateFactory) {
@@ -59,31 +59,32 @@ abstract class BaseAction {
     this.batchUpdateFactory = batchUpdateFactory;
   }
 
-  protected void changeStatus(Change change, final PatchSet.Id psId,
-      Input input, final Status from, final Status to)
+  protected void changeStatus(
+      Change change, final PatchSet.Id psId, Input input, final Status from, final Status to)
       throws OrmException, RestApiException, IOException, UpdateException {
     ReviewDb db = dbProvider.get();
     Change.Id changeId = change.getId();
     db.changes().beginTransaction(changeId);
-    try (BatchUpdate bu = batchUpdateFactory.create(
-        db, change.getProject(), userProvider.get(), TimeUtil.nowTs())) {
-      bu.addOp(change.getId(), new BatchUpdateOp() {
-        @Override
-        public boolean updateChange(ChangeContext ctx) {
-          Change change = ctx.getChange();
-          ChangeUpdate update = ctx.getUpdate(psId);
-          if (change.getStatus() == from) {
-            change.setStatus(to);
-            update.setStatus(change.getStatus());
-            return true;
-          }
-          return false;
-        }
-      });
+    try (BatchUpdate bu =
+        batchUpdateFactory.create(db, change.getProject(), userProvider.get(), TimeUtil.nowTs())) {
+      bu.addOp(
+          change.getId(),
+          new BatchUpdateOp() {
+            @Override
+            public boolean updateChange(ChangeContext ctx) {
+              Change change = ctx.getChange();
+              ChangeUpdate update = ctx.getUpdate(psId);
+              if (change.getStatus() == from) {
+                change.setStatus(to);
+                update.setStatus(change.getStatus());
+                return true;
+              }
+              return false;
+            }
+          });
       bu.execute();
 
-      db.changeMessages().insert(Collections.singleton(
-          newMessage(input, change)));
+      db.changeMessages().insert(Collections.singleton(newMessage(input, change)));
 
       db.commit();
     } finally {
@@ -93,11 +94,10 @@ abstract class BaseAction {
     indexer.index(db, change);
   }
 
-  private ChangeMessage newMessage(Input input,
-      Change change) throws OrmException {
-    StringBuilder buf = new StringBuilder(change.getStatus() == Status.DRAFT
-        ? "Work In Progress"
-        : "Ready For Review");
+  private ChangeMessage newMessage(Input input, Change change) throws OrmException {
+    StringBuilder buf =
+        new StringBuilder(
+            change.getStatus() == Status.DRAFT ? "Work In Progress" : "Ready For Review");
 
     String msg = Strings.nullToEmpty(input.message).trim();
     if (!msg.isEmpty()) {
@@ -105,20 +105,17 @@ abstract class BaseAction {
       buf.append(msg);
     }
 
-    ChangeMessage message = new ChangeMessage(
-        new ChangeMessage.Key(
-            change.getId(),
-            ChangeUtil.messageUuid()),
-        ((IdentifiedUser)userProvider.get()).getAccountId(),
-        change.getLastUpdatedOn(),
-        change.currentPatchSetId());
+    ChangeMessage message =
+        new ChangeMessage(
+            new ChangeMessage.Key(change.getId(), ChangeUtil.messageUuid()),
+            ((IdentifiedUser) userProvider.get()).getAccountId(),
+            change.getLastUpdatedOn(),
+            change.currentPatchSetId());
     message.setMessage(msg.toString());
     return message;
   }
 
   protected static String status(Change change) {
-    return change != null
-        ? change.getStatus().name().toLowerCase()
-        : "deleted";
+    return change != null ? change.getStatus().name().toLowerCase() : "deleted";
   }
 }

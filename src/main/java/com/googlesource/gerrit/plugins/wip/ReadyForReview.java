@@ -14,8 +14,6 @@
 
 package com.googlesource.gerrit.plugins.wip;
 
-import java.io.IOException;
-
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -28,18 +26,19 @@ import com.google.gerrit.reviewdb.server.ReviewDb;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.index.change.ChangeIndexer;
-import com.google.gwtorm.server.OrmException;
 import com.google.gerrit.server.update.BatchUpdate;
 import com.google.gerrit.server.update.UpdateException;
+import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import java.io.IOException;
 
-class ReadyForReview extends BaseAction implements
-    UiAction<RevisionResource>,
-    RestModifyView<RevisionResource, BaseAction.Input> {
+class ReadyForReview extends BaseAction
+    implements UiAction<RevisionResource>, RestModifyView<RevisionResource, BaseAction.Input> {
 
   @Inject
-  ReadyForReview(Provider<ReviewDb> dbProvider,
+  ReadyForReview(
+      Provider<ReviewDb> dbProvider,
       Provider<CurrentUser> userProvider,
       ChangeIndexer indexer,
       BatchUpdate.Factory batchUpdateFactory) {
@@ -58,8 +57,7 @@ class ReadyForReview extends BaseAction implements
       throw new ResourceConflictException("not current patch set");
     }
 
-    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.DRAFT,
-        Status.NEW);
+    changeStatus(change, rsrc.getPatchSet().getId(), input, Status.DRAFT, Status.NEW);
     return Response.none();
   }
 
@@ -69,8 +67,9 @@ class ReadyForReview extends BaseAction implements
     return new Description()
         .setLabel("Ready")
         .setTitle("Set Ready For Review")
-        .setVisible(rsrc.getControl().isOwner()
-           && rsrc.getChange().getStatus() == Status.DRAFT
-           && rsrc.getPatchSet().getId().equals(current));
+        .setVisible(
+            rsrc.getControl().isOwner()
+                && rsrc.getChange().getStatus() == Status.DRAFT
+                && rsrc.getPatchSet().getId().equals(current));
   }
 }
